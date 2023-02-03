@@ -1,119 +1,262 @@
-<!doctype html>
-<html lang="pr-br">
-
-<head>
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
     <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Huggy encodeURI</title>
-    <link rel="stylesheet" href="assets/materialize.min.css">
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>URL generator with UTM - Huggy</title>
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/materialize.min.css" />
     <style>
-        html,
-        body {
-            width: 100%;
-            height: 100%;
-        }
-        
-         ::placeholder {
-            /* Chrome, Firefox, Opera, Safari 10.1+ */
-            color: #888;
-            opacity: 1;
-            /* Firefox */
-        }
-        
-         :-ms-input-placeholder {
-            /* Internet Explorer 10-11 */
-            color: #888;
-        }
-        
-         ::-ms-input-placeholder {
-            /* Microsoft Edge */
-            color: #888;
-        }
-        
-        main {
-            width: 100%;
-            min-height: 100%;
-            padding: 30px 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #263645;
-        }
-        
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+      }
+
+      ::placeholder {
+        /* Chrome, Firefox, Opera, Safari 10.1+ */
+        color: #888;
+        opacity: 1;
+        /* Firefox */
+      }
+
+      :-ms-input-placeholder {
+        /* Internet Explorer 10-11 */
+        color: #888;
+      }
+
+      ::-ms-input-placeholder {
+        /* Microsoft Edge */
+        color: #888;
+      }
+
+      main {
+        width: 100%;
+        min-height: 100%;
+        padding: 30px 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #263645;
+      }
+
+      main .formulario {
+        text-align: center;
+        padding: 30px;
+        border-radius: 30px;
+        background-color: #ffffff;
+        width: 100%;
+        max-width: 470px;
+      }
+
+      main .formulario textarea {
+        height: 5rem;
+        margin-bottom: 12px;
+      }
+
+      main .formulario .btn {
+        font-weight: bold;
+        width: 100%;
+        max-width: 200px;
+        border-radius: 30px;
+      }
+
+      main .formulario .btn:not(.disabled) {
+        background: #ff0068 !important;
+      }
+
+      @media (max-width: 480px) {
         main .formulario {
-            text-align: center;
-            padding: 30px;
-            border-radius: 30px;
-            background-color: #FFFFFF;
-            width: 100%;
-            max-width: 470px;
+          max-width: 85%;
         }
-        
-        main .formulario textarea {
-            height: 5rem;
-            margin-bottom: 12px;
-        }
-        
-        main .formulario .btn {
-            font-weight: bold;
-            width: 100%;
-            max-width: 200px;
-            border-radius: 30px;
-        }
-        
-        main .formulario .btn:not(.disabled) {
-            background: #ff0068 !important;
-        }
-        
-        @media(max-width: 480px) {
-            main .formulario {
-                max-width: 85%;
-            }
-        }
+      }
+      .input-field {
+        display: grid;
+        grid-template-columns: auto 32px;
+        grid-gap: 14px;
+      }
+      .input-field .material-icons {
+        font-size: 22px;
+        align-self: center;
+      }
+      .material-tooltip {
+        max-width: 280px;
+      }
+      .input_text {
+        font-size: 14px !important;
+      }
     </style>
-</head>
+  </head>
 
-<body>
-
+  <body>
     <main>
-        <div class="formulario">
-            <img src="assets/huggy-logo.svg" alt="">
-            <p>Encode de url para campanhas.</p>
-            <textarea name="url" id="url" placeholder="Cole ou digite o endereço com as utms"></textarea>
-            <textarea name="saida" id="saida" placeholder="Url de redirecionamento" readonly></textarea>
-            <a onclick="copyUrl()" class="waves-effect waves-light btn disabled tooltipped" data-position="top" data-tooltip="Copiar Url">Copiar</a>
-            <div></div>
-        </div>
+      <div class="formulario">
+        <img src="assets/huggy-logo.svg" alt="" />
+        <p>Gerador de url para trackeamento de campanhas</p>
+
+        <form action="#">
+          <div class="input-field">
+            <input
+              onkeyup="inputKeyUp(this)"
+              type="url"
+              class="input_text"
+              name="url"
+              placeholder="Url de destino"
+            />
+            <i
+              class="material-icons tooltipped"
+              data-position="left"
+              data-tooltip="Url para onde você deseja redirecionar o lead."
+              >error</i
+            >
+          </div>
+          <div class="input-field">
+            <input
+              onkeyup="inputKeyUp(this)"
+              type="text"
+              class="input_text"
+              name="utm_source"
+              placeholder="UTM Source"
+            />
+            <i
+              class="material-icons tooltipped"
+              data-html="true"
+              data-position="left"
+              data-tooltip="A origem do lead, exemplo: facebook, google, linkedin."
+              >error</i
+            >
+          </div>
+          <div class="input-field">
+            <input
+              onkeyup="inputKeyUp(this)"
+              type="text"
+              class="input_text"
+              name="utm_medium"
+              placeholder="UTM Medium"
+            />
+            <i
+              class="material-icons tooltipped"
+              data-html="true"
+              data-position="left"
+              data-tooltip="Por onde você obteve esse lead, exemplo: modal-website, cpc, post-123."
+              >error</i
+            >
+          </div>
+          <div class="input-field">
+            <input
+              onkeyup="inputKeyUp(this)"
+              type="text"
+              class="input_text"
+              name="utm_campaign"
+              placeholder="UTM Campaign"
+            />
+            <i
+              class="material-icons tooltipped"
+              data-html="true"
+              data-position="left"
+              data-tooltip="A campanha desenvolvida para obtenção deste lead, exemplo: [FB] chatbots no negócio."
+              >error</i
+            >
+          </div>
+          <div class="input-field">
+            <input
+              type="text"
+              class="input_text"
+              name="utm_content"
+              placeholder="UTM Content"
+            />
+            <i
+              class="material-icons tooltipped"
+              data-html="true"
+              data-position="left"
+              data-tooltip="A partir de qual conteúdo você conseguiu capturar esse lead, exemplo: content-001, blog-001."
+              >error</i
+            >
+          </div>
+          <div class="input-field">
+            <input
+              onkeyup="inputKeyUp(this)"
+              type="text"
+              class="input_text"
+              name="utm_term"
+              placeholder="UTM Term"
+            />
+            <i
+              class="material-icons tooltipped"
+              data-html="true"
+              data-position="left"
+              data-tooltip="Aqui você poderá trackear as palavras chaves utilizadas para obter esse lead, exemplo: huggy, chatbot, whatsapp."
+              >error</i
+            >
+          </div>
+        </form>
+        <textarea
+          name="output"
+          id="output"
+          placeholder="Url de redirecionamento"
+          readonly
+        ></textarea>
+        <a
+          onclick="copyUrl()"
+          class="waves-effect waves-light btn btn-copy disabled tooltipped"
+          data-position="top"
+          data-tooltip="Copiar Url"
+          >Copiar</a
+        >
+        <div></div>
+      </div>
     </main>
 
     <script src="assets/materialize.min.js"></script>
     <script>
-        function copyUrl() {
-            var copyText = document.getElementById("saida");
-            copyText.select();
-            copyText.setSelectionRange(0, 99999);
-            navigator.clipboard.writeText(copyText.value);
-            document.querySelector(".btn").setAttribute("data-tooltip", "Url copiada");
-            var elems = document.querySelector('.tooltipped');
-            var instances = M.Tooltip.init(elems);
-            instances.open();
+      document.addEventListener("DOMContentLoaded", function () {
+        var elems = document.querySelectorAll(".tooltipped");
+        var instances = M.Tooltip.init(elems, []);
+      });
+
+      document.addEventListener("DOMContentLoaded", function () {
+        var elems = document.querySelector(".tooltipped");
+        var instances = M.Tooltip.init(elems);
+      });
+
+      var output = document.getElementById("output");
+      var btn = document.querySelector(".btn-copy");
+      var values = [];
+
+      function copyUrl() {
+        var copyText = document.getElementById("output");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999);
+        navigator.clipboard.writeText(copyText.value);
+        btn.setAttribute("data-tooltip", "Url copiada");
+        var instances = M.Tooltip.init(btn);
+        instances.open();
+      }
+
+      function inputKeyUp(item) {
+        values[item.name] = item.value;
+        generateUrl();
+      }
+
+      function generateUrl() {
+        if (!values.url) return;
+        params = [];
+        for (var key in values) {
+          if (values.hasOwnProperty(key)) {
+            params.push(key + "=" + encodeURIComponent(values[key]));
+          }
         }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            var elems = document.querySelector('.tooltipped');
-            var instances = M.Tooltip.init(elems);
-        });
-
-        var input = document.getElementById('url');
-        var output = document.getElementById('saida');
-        var btn = document.querySelector('.btn');
-        input.addEventListener('keyup', function() {
-            output.value = "https://www.huggy.io/pt-br/redirect?url=" + encodeURIComponent(this.value);
-            btn.classList.remove('disabled');
-        });
+        output.value =
+          "https://www.huggy.io/pt-br/redirect?" + params.join("&");
+        btn.classList.remove("disabled");
+      }
     </script>
-
-</body>
-
+  </body>
 </html>
